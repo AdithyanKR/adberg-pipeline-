@@ -1,0 +1,191 @@
+[
+  {
+    "id": "mpejvyt5yb8z",
+    "client": "Zara Boutique",
+    "title": "Summer reel – new arrivals",
+    "type": "Reel",
+    "assigned": "Editor 1",
+    "due": "2026-05-18",
+    "stage": 4,
+    "notes": [
+      {
+        "t": "Use trending audio, keep under 30s",
+        "ts": "21 May, 02:34"
+      }
+    ],
+    "revisions": 0
+  },
+  {
+    "id": "mpejvyv12dkf",
+    "client": "Zara Boutique",
+    "title": "Story: sale countdown",
+    "type": "Story",
+    "assigned": "Junior",
+    "due": "2026-05-21",
+    "stage": 3,
+    "notes": [],
+    "revisions": 0
+  },
+  {
+    "id": "mpejvyv2cflc",
+    "client": "SpiceHouse",
+    "title": "Meta ad – Eid collection",
+    "type": "Meta Ad",
+    "assigned": "Editor 2",
+    "due": "2026-05-15",
+    "stage": 6,
+    "notes": [
+      {
+        "t": "Client wants red palette",
+        "ts": "21 May, 02:34"
+      }
+    ],
+    "revisions": 1
+  },
+  {
+    "id": "mpejvyv2drj1",
+    "client": "SpiceHouse",
+    "title": "Google search ad copy",
+    "type": "Google Ad",
+    "assigned": "Copywriter",
+    "due": "2026-05-23",
+    "stage": 2,
+    "notes": [],
+    "revisions": 0
+  },
+  {
+    "id": "mpejvyv2lsp4",
+    "client": "TechNest",
+    "title": "Product launch reel",
+    "type": "Reel",
+    "assigned": "Editor 1",
+    "due": "2026-05-20",
+    "stage": 5,
+    "notes": [],
+    "revisions": 0
+  },
+  {
+    "id": "mpejvyv2nkuf",
+    "client": "TechNest",
+    "title": "YouTube Short – unboxing",
+    "type": "YouTube Short",
+    "assigned": "Editor 2",
+    "due": "2026-05-27",
+    "stage": 1,
+    "notes": [],
+    "revisions": 0
+  },
+  {
+    "id": "mpejvyv27oes",
+    "client": "FreshBakes",
+    "title": "Caption pack – June",
+    "type": "Caption/Copy",
+    "assigned": "Copywriter",
+    "due": "2026-05-22",
+    "stage": 2,
+    "notes": [],
+    "revisions": 0
+  },
+  {
+    "id": "mpejvyv2j95x",
+    "client": "FreshBakes",
+    "title": "Reel – behind the scenes",
+    "type": "Reel",
+    "assigned": "Junior",
+    "due": "2026-05-19",
+    "stage": 3,
+    "notes": [],
+    "revisions": 0
+  },
+  {
+    "id": "mpejvyv22m2k",
+    "client": "SpiceHouse",
+    "title": "Reel revision round 2",
+    "type": "Reel",
+    "assigned": "Editor 1",
+    "due": "2026-05-17",
+    "stage": 7,
+    "notes": [
+      {
+        "t": "Shorten to 30s, new CTA",
+        "ts": "21 May, 02:34"
+      }
+    ],
+    "revisions": 2
+  },
+  {
+    "id": "mpejvyv28xfd",
+    "client": "TechNest",
+    "title": "Meta ad – back to school",
+    "type": "Meta Ad",
+    "assigned": "Editor 2",
+    "due": "2026-05-30",
+    "stage": 8,
+    "notes": [],
+    "revisions": 0
+  },
+  {
+    "id": "mpel0ngpfc0p",
+    "client": "ncgchvk,bklh",
+    "title": "bxvjxbv",
+    "type": "Reel",
+    "assigned": "Editor 1",
+    "due": "2026-05-20",
+    "stage": 1,
+    "revisions": 0,
+    "notes": [
+      {
+        "t": "bn",
+        "ts": "21 May, 03:06"
+      }
+    ]
+  },
+  {
+    "id": "mpem96vstk5t",
+    "client": "cara bot",
+    "title": "cobtent",
+    "type": "Reel",
+    "assigned": "Editor 1",
+    "due": "2026-05-20",
+    "stage": 1,
+    "revisions": 0,
+    "notes": [
+      {
+        "t": "jabfdjjsdnjvds",
+        "ts": "21 May, 03:41"
+      }
+    ]
+  },
+  {
+    "id": "mpfcpj7eaz8q",
+    "client": "dvbfbfbb",
+    "title": "bbfdbdfb",
+    "type": "Reel",
+    "assigned": "Editor 1",
+    "due": "2026-05-21",
+    "stage": 1,
+    "revisions": 0,
+    "notes": [
+      {
+        "t": "dbfbdfdfb",
+        "ts": "21 May, 16:01"
+      }
+    ]
+  },
+  {
+    "id": "mpfcq5pp39oq",
+    "client": "fdbbdf",
+    "title": "bfdbfdbfd",
+    "type": "Reel",
+    "assigned": "Editor 1",
+    "due": "2026-05-21",
+    "stage": 1,
+    "revisions": 0,
+    "notes": [
+      {
+        "t": "bdbdbdbffbdb",
+        "ts": "21 May, 16:02"
+      }
+    ]
+  }
+]

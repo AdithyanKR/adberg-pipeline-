@@ -1,0 +1,485 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --navy:#0F2645;--navy2:#1A3A60;--blue:#185FA5;--blue2:#378ADD;
+  --bg:var(--color-background-primary);--bg2:var(--color-background-secondary);--bg3:var(--color-background-tertiary);
+  --text:var(--color-text-primary);--text2:var(--color-text-secondary);--text3:var(--color-text-tertiary);
+  --border:var(--color-border-tertiary);--border2:var(--color-border-secondary);
+  --r:12px;--rl:16px;--rxl:20px;
+  --success:var(--color-background-success);--successt:var(--color-text-success);
+  --warn:var(--color-background-warning);--warnt:var(--color-text-warning);
+  --danger:var(--color-background-danger);--dangert:var(--color-text-danger);
+  --info:var(--color-background-info);--infot:var(--color-text-info);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:transparent}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* TOP NAV */
+.nav{background:var(--navy);border-radius:var(--rxl);padding:16px 18px 14px;margin-bottom:12px}
+.nav-title{font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.5px}
+.nav-sub{font-size:12px;color:#7FA8CC;margin-top:2px;font-weight:400}
+.nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px}
+.nav-stats{display:flex;gap:6px;flex:1}
+.nav-stat{background:rgba(255,255,255,.1);border-radius:10px;padding:7px 10px;text-align:center;flex:1}
+.nav-stat-num{font-size:18px;font-weight:700;color:#fff;line-height:1}
+.nav-stat-label{font-size:10px;color:#7FA8CC;margin-top:2px;font-weight:500}
+.nav-add-btn{background:#fff;color:var(--navy);border:none;border-radius:12px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
+.nav-add-btn:active{opacity:.8;transform:scale(.97)}
+
+/* SYNC BAR */
+.sync-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px;border:0.5px solid var(--border)}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0}
+.sync-dot.loading{background:#f59e0b}
+.sync-dot.error{background:#ef4444}
+.sync-text{font-size:12px;color:var(--text2);flex:1;font-weight:500}
+.sync-btn{font-size:12px;color:var(--blue2);font-weight:600;background:none;border:none;cursor:pointer;padding:0;font-family:inherit}
+
+/* SEGMENT CONTROL */
+.seg{display:flex;background:var(--bg2);border-radius:10px;padding:3px;margin-bottom:12px;border:0.5px solid var(--border)}
+.seg-btn{flex:1;padding:8px 6px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .18s;font-family:inherit}
+.seg-btn.active{background:var(--bg);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+
+/* FILTER PILLS */
+.filter-scroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;scrollbar-width:none}
+.filter-scroll::-webkit-scrollbar{display:none}
+.pill{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .15s}
+.pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* STAGE SECTION */
+.stage-section{margin-bottom:10px;border-radius:var(--rl);overflow:hidden;border:0.5px solid var(--border)}
+.stage-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;user-select:none}
+.stage-num-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.stage-head-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
+.stage-head-who{font-size:11px;color:var(--text3);font-weight:500}
+.stage-count-pill{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.stage-chevron{font-size:16px;color:var(--text3);transition:transform .2s}
+.stage-chevron.open{transform:rotate(180deg)}
+.stage-body{padding:0 10px 10px;display:flex;flex-direction:column;gap:7px}
+
+/* TASK CARD — iOS style */
+.task-card{background:var(--bg);border-radius:var(--r);padding:13px 14px;cursor:pointer;border:0.5px solid var(--border);transition:transform .12s;position:relative;overflow:hidden}
+.task-card:active{transform:scale(.98)}
+.task-card-accent{position:absolute;left:0;top:0;bottom:0;width:3px}
+.task-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+.task-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.3;flex:1}
+.task-client-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--info);color:var(--infot);white-space:nowrap;flex-shrink:0}
+.task-meta-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px}
+.tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px}
+.tag-type{background:var(--bg2);color:var(--text2);border:0.5px solid var(--border)}
+.tag-person{background:#EDE9FE;color:#5B21B6}
+.tag-rev{background:var(--warn);color:var(--warnt)}
+.tag-note{background:var(--bg2);color:var(--text3);border:0.5px solid var(--border)}
+.task-due-row{display:flex;align-items:center;gap:5px;margin-top:7px}
+.due-icon{font-size:13px}
+.due-text{font-size:12px;font-weight:500;color:var(--text3)}
+.due-text.overdue{color:var(--dangert);font-weight:700}
+.due-text.urgent{color:var(--warnt);font-weight:700}
+.task-chevron{font-size:14px;color:var(--text3);margin-left:auto}
+.empty-stage{padding:16px 14px;font-size:13px;color:var(--text3);text-align:center}
+.add-in-stage{width:100%;padding:10px;border-radius:10px;border:0.5px dashed var(--border2);background:transparent;color:var(--blue2);font-size:13px;font-weight:600;cursor:pointer;margin-top:2px;font-family:inherit}
+.add-in-stage:active{background:var(--bg2)}
+
+/* DASHBOARD */
+.dash-section{margin-bottom:12px}
+.dash-label{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stat-tile{background:var(--bg2);border-radius:var(--rl);padding:14px;display:flex;flex-direction:column;gap:4px}
+.stat-tile-num{font-size:26px;font-weight:700;line-height:1}
+.stat-tile-label{font-size:12px;color:var(--text2);font-weight:500}
+.bar-card{background:var(--bg2);border-radius:var(--rl);padding:14px;margin-bottom:8px}
+.bar-card-title{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.bar-row:last-child{margin-bottom:0}
+.bar-lbl{font-size:12px;color:var(--text);font-weight:500;width:80px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .4s}
+.bar-num{font-size:12px;color:var(--text3);font-weight:600;min-width:16px;text-align:right}
+
+/* SHEET (modal) */
+.sheet-bg{background:rgba(0,0,0,.45);min-height:500px;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);border-radius:var(--rxl) var(--rxl) 0 0;width:100%;padding:20px 18px 24px;display:flex;flex-direction:column;gap:14px}
+.sheet-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 6px}
+.sheet-title{font-size:17px;font-weight:700;color:var(--text);text-align:center}
+.field-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px;display:block}
+.ios-input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:15px;color:var(--text);font-family:inherit}
+.ios-input:focus{outline:none;border-color:var(--blue2)}
+.ios-select{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:15px;color:var(--text);font-family:inherit;appearance:none}
+.ios-textarea{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:14px;color:var(--text);font-family:inherit;min-height:72px;resize:none}
+.ios-textarea:focus,.ios-select:focus{outline:none;border-color:var(--blue2)}
+.ios-primary-btn{width:100%;background:var(--navy);color:#fff;border:none;border-radius:var(--r);padding:15px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}
+.ios-primary-btn:active{opacity:.85;transform:scale(.98)}
+.ios-ghost-btn{width:100%;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border);border-radius:var(--r);padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.ios-ghost-btn:active{opacity:.8}
+.ios-danger-btn{width:100%;background:var(--danger);color:var(--dangert);border:none;border-radius:var(--r);padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.detail-row-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.detail-field{display:flex;flex-direction:column;gap:3px}
+.detail-key{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.04em}
+.detail-val{font-size:14px;color:var(--text);font-weight:500}
+.notes-list{display:flex;flex-direction:column;gap:6px}
+.note-bubble{background:var(--bg2);border-radius:10px;padding:10px 12px;border:0.5px solid var(--border)}
+.note-bubble-time{font-size:10px;color:var(--text3);margin-bottom:3px;font-weight:500}
+.note-bubble-text{font-size:13px;color:var(--text);line-height:1.5}
+</style>
+
+<h2 class="sr-only">Adberg Production Pipeline — shared team kanban with iOS-style design</h2>
+<div id="app" style="padding:0">
+
+  <div class="nav">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div class="nav-title">Adberg Pipeline</div>
+        <div class="nav-sub">Shared team board · live sync</div>
+      </div>
+      <button class="nav-add-btn" onclick="openAdd(1)"><i class="ti ti-plus" aria-hidden="true"></i> Add task</button>
+    </div>
+    <div class="nav-stats" style="margin-top:12px" id="nav-stats"></div>
+  </div>
+
+  <div class="sync-bar" id="sync-bar">
+    <div class="sync-dot loading" id="sync-dot"></div>
+    <div class="sync-text" id="sync-text">Connecting to shared storage…</div>
+    <button class="sync-btn" onclick="syncNow()"><i class="ti ti-refresh" aria-hidden="true"></i> Sync</button>
+  </div>
+
+  <div class="seg">
+    <button class="seg-btn active" onclick="switchTab('board',this)"><i class="ti ti-layout-kanban" aria-hidden="true"></i> Board</button>
+    <button class="seg-btn" onclick="switchTab('dashboard',this)"><i class="ti ti-chart-bar" aria-hidden="true"></i> Dashboard</button>
+  </div>
+
+  <div id="view-board">
+    <div class="filter-scroll" id="filter-pills"></div>
+    <div id="board-body"></div>
+  </div>
+
+  <div id="view-dashboard" style="display:none" id="dash-body"></div>
+</div>
+
+<div id="modal-zone"></div>
+
+<script>
+const STAGES=[
+  {id:1,name:"Brief received",who:"Client Lead",color:"#DBEAFE",text:"#1E40AF",accent:"#1E40AF"},
+  {id:2,name:"Script / concept",who:"Copywriter",color:"#EDE9FE",text:"#5B21B6",accent:"#5B21B6"},
+  {id:3,name:"Shoot / assets",who:"Client + Delivery Lead",color:"#FEF3C7",text:"#92400E",accent:"#D97706"},
+  {id:4,name:"Editing",who:"Editor",color:"#FCE7F3",text:"#9D174D",accent:"#DB2777"},
+  {id:5,name:"Internal review",who:"Delivery Lead",color:"#D1FAE5",text:"#065F46",accent:"#059669"},
+  {id:6,name:"Client approval",who:"Client Lead",color:"#FEF3C7",text:"#92400E",accent:"#D97706"},
+  {id:7,name:"Revision",who:"Editor + Client Lead",color:"#DBEAFE",text:"#1E40AF",accent:"#2563EB"},
+  {id:8,name:"Published",who:"Delivery Lead",color:"#D1FAE5",text:"#065F46",accent:"#059669"},
+];
+const TEAM=["Editor 1","Editor 2","Junior","Copywriter","Partner"];
+const TYPES=["Reel","Meta Ad","Google Ad","Story","YouTube Short","Caption/Copy"];
+
+let tasks=[];
+let filterClient='';
+let filterType='';
+let collapsedStages=new Set();
+let activeTab='board';
+let syncInterval=null;
+let lastSyncKey='';
+
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function ts(){return new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}
+
+function dueStatus(due){
+  if(!due)return'';
+  const today=new Date();today.setHours(0,0,0,0);
+  const diff=Math.round((new Date(due)-today)/864e5);
+  return diff<0?'overdue':diff<=2?'urgent':'';
+}
+function dueLabel(due,status){
+  if(!due)return'';
+  const label=new Date(due).toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
+  if(status==='overdue')return'Overdue · '+label;
+  if(status==='urgent')return'Due soon · '+label;
+  return label;
+}
+
+async function loadFromStorage(){
+  setSyncState('loading','Syncing with team…');
+  try{
+    const res=await window.storage.get('adberg-tasks',true);
+    if(res&&res.value){
+      const parsed=JSON.parse(res.value);
+      if(parsed.key!==lastSyncKey){
+        tasks=parsed.tasks||[];
+        lastSyncKey=parsed.key||'';
+      }
+    } else {
+      seedTasks();
+      await saveToStorage();
+    }
+    setSyncState('ok','Team board synced · '+ts());
+  }catch(e){
+    if(tasks.length===0)seedTasks();
+    setSyncState('error','Offline — showing local data');
+  }
+  render();
+}
+
+async function saveToStorage(){
+  lastSyncKey=uid();
+  try{
+    await window.storage.set('adberg-tasks',JSON.stringify({tasks,key:lastSyncKey}),true);
+    setSyncState('ok','Saved · '+ts());
+  }catch(e){
+    setSyncState('error','Save failed — check connection');
+  }
+}
+
+function setSyncState(state,msg){
+  const dot=document.getElementById('sync-dot');
+  const txt=document.getElementById('sync-text');
+  dot.className='sync-dot'+(state==='loading'?' loading':state==='error'?' error':'');
+  txt.textContent=msg;
+}
+
+async function syncNow(){
+  await loadFromStorage();
+}
+
+function seedTasks(){
+  const d=(n)=>{let x=new Date();x.setDate(x.getDate()+n);return x.toISOString().slice(0,10)};
+  tasks=[
+    {id:uid(),client:"Zara Boutique",title:"Summer reel – new arrivals",type:"Reel",assigned:"Editor 1",due:d(-2),stage:4,notes:[{t:"Use trending audio, keep under 30s",ts:ts()}],revisions:0},
+    {id:uid(),client:"Zara Boutique",title:"Story: sale countdown",type:"Story",assigned:"Junior",due:d(1),stage:3,notes:[],revisions:0},
+    {id:uid(),client:"SpiceHouse",title:"Meta ad – Eid collection",type:"Meta Ad",assigned:"Editor 2",due:d(-5),stage:6,notes:[{t:"Client wants red palette",ts:ts()}],revisions:1},
+    {id:uid(),client:"SpiceHouse",title:"Google search ad copy",type:"Google Ad",assigned:"Copywriter",due:d(3),stage:2,notes:[],revisions:0},
+    {id:uid(),client:"TechNest",title:"Product launch reel",type:"Reel",assigned:"Editor 1",due:d(0),stage:5,notes:[],revisions:0},
+    {id:uid(),client:"TechNest",title:"YouTube Short – unboxing",type:"YouTube Short",assigned:"Editor 2",due:d(7),stage:1,notes:[],revisions:0},
+    {id:uid(),client:"FreshBakes",title:"Caption pack – June",type:"Caption/Copy",assigned:"Copywriter",due:d(2),stage:2,notes:[],revisions:0},
+    {id:uid(),client:"FreshBakes",title:"Reel – behind the scenes",type:"Reel",assigned:"Junior",due:d(-1),stage:3,notes:[],revisions:0},
+    {id:uid(),client:"SpiceHouse",title:"Reel revision round 2",type:"Reel",assigned:"Editor 1",due:d(-3),stage:7,notes:[{t:"Shorten to 30s, new CTA",ts:ts()}],revisions:2},
+    {id:uid(),client:"TechNest",title:"Meta ad – back to school",type:"Meta Ad",assigned:"Editor 2",due:d(10),stage:8,notes:[],revisions:0},
+  ];
+}
+
+function getClients(){return[...new Set(tasks.map(t=>t.client))].sort()}
+
+function filteredTasks(){
+  return tasks.filter(t=>(!filterClient||t.client===filterClient)&&(!filterType||t.type===filterType));
+}
+
+function render(){
+  renderNavStats();
+  if(activeTab==='board')renderBoard();
+  else renderDashboard();
+}
+
+function renderNavStats(){
+  const total=tasks.length;
+  const overdue=tasks.filter(t=>dueStatus(t.due)==='overdue').length;
+  const inProd=tasks.filter(t=>t.stage>1&&t.stage<8).length;
+  const done=tasks.filter(t=>t.stage===8).length;
+  document.getElementById('nav-stats').innerHTML=`
+    <div class="nav-stat"><div class="nav-stat-num">${total}</div><div class="nav-stat-label">Total</div></div>
+    <div class="nav-stat"><div class="nav-stat-num">${inProd}</div><div class="nav-stat-label">In prod</div></div>
+    <div class="nav-stat"><div class="nav-stat-num" style="color:#f87171">${overdue}</div><div class="nav-stat-label">Overdue</div></div>
+    <div class="nav-stat"><div class="nav-stat-num" style="color:#4ade80">${done}</div><div class="nav-stat-label">Published</div></div>`;
+}
+
+function renderBoard(){
+  renderFilterPills();
+  const vis=filteredTasks();
+  let html='';
+  STAGES.forEach(s=>{
+    const stageTasks=vis.filter(t=>t.stage===s.id);
+    const isOpen=!collapsedStages.has(s.id);
+    html+=`<div class="stage-section">
+      <div class="stage-head" onclick="toggleStage(${s.id})">
+        <div class="stage-num-circle" style="background:${s.color};color:${s.text}">${s.id}</div>
+        <div>
+          <div class="stage-head-title">${s.name}</div>
+          <div class="stage-head-who">${s.who}</div>
+        </div>
+        <div class="stage-count-pill" style="background:${s.color};color:${s.text}">${stageTasks.length}</div>
+        <i class="ti ti-chevron-down stage-chevron${isOpen?' open':''}" aria-hidden="true"></i>
+      </div>`;
+    if(isOpen){
+      html+=`<div class="stage-body">`;
+      if(stageTasks.length===0)html+=`<div class="empty-stage">No tasks here</div>`;
+      stageTasks.forEach(t=>{
+        const status=dueStatus(t.due);
+        html+=`<div class="task-card" onclick="openDetail('${t.id}')">
+          <div class="task-card-accent" style="background:${s.accent}"></div>
+          <div class="task-top">
+            <div class="task-title">${t.title}</div>
+            <div class="task-client-badge">${t.client}</div>
+          </div>
+          <div class="task-meta-row">
+            <span class="tag tag-type">${t.type}</span>
+            <span class="tag tag-person">${t.assigned}</span>
+            ${t.revisions>0?`<span class="tag tag-rev"><i class="ti ti-refresh" aria-hidden="true" style="font-size:10px"></i> Rev ${t.revisions}</span>`:''}
+            ${t.notes.length?`<span class="tag tag-note"><i class="ti ti-message" aria-hidden="true" style="font-size:10px"></i> ${t.notes.length}</span>`:''}
+          </div>
+          ${t.due?`<div class="task-due-row"><i class="ti ti-calendar due-icon" aria-hidden="true"></i><span class="due-text${status?' '+status:''}">${dueLabel(t.due,status)}</span></div>`:''}
+        </div>`;
+      });
+      html+=`<button class="add-in-stage" onclick="event.stopPropagation();openAdd(${s.id})"><i class="ti ti-plus" aria-hidden="true"></i> Add to ${s.name}</button>`;
+      html+=`</div>`;
+    }
+    html+=`</div>`;
+  });
+  document.getElementById('board-body').innerHTML=html;
+}
+
+function renderFilterPills(){
+  const clients=getClients();
+  let html=`<button class="pill${!filterClient&&!filterType?' active':''}" onclick="setFilter('','')">All</button>`;
+  clients.forEach(c=>{html+=`<button class="pill${filterClient===c?' active':''}" onclick="setFilter('${c}','')">${c}</button>`});
+  TYPES.forEach(tp=>{html+=`<button class="pill${filterType===tp?' active':''}" onclick="setFilter('',encodeURIComponent('${tp}'))">${tp}</button>`});
+  document.getElementById('filter-pills').innerHTML=html;
+}
+
+function setFilter(client,type){
+  filterClient=client;
+  filterType=type?decodeURIComponent(type):'';
+  renderBoard();
+}
+
+function toggleStage(id){
+  if(collapsedStages.has(id))collapsedStages.delete(id);
+  else collapsedStages.add(id);
+  renderBoard();
+}
+
+function renderDashboard(){
+  const byEditor={},byClient={},byType={};
+  tasks.forEach(t=>{
+    byEditor[t.assigned]=(byEditor[t.assigned]||0)+1;
+    byClient[t.client]=(byClient[t.client]||0)+1;
+    byType[t.type]=(byType[t.type]||0)+1;
+  });
+  const total=tasks.length||1;
+  const overdue=tasks.filter(t=>dueStatus(t.due)==='overdue').length;
+  const urgent=tasks.filter(t=>dueStatus(t.due)==='urgent').length;
+  const ontrack=tasks.filter(t=>!dueStatus(t.due)).length;
+  const done=tasks.filter(t=>t.stage===8).length;
+  const bars=(obj,color)=>Object.entries(obj).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
+    <div class="bar-row"><div class="bar-lbl">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/total*100)}%;background:${color}"></div></div><div class="bar-num">${v}</div></div>`).join('');
+  document.getElementById('view-dashboard').innerHTML=`
+    <div class="stat-grid">
+      <div class="stat-tile"><div class="stat-tile-num">${tasks.length}</div><div class="stat-tile-label">Total tasks</div></div>
+      <div class="stat-tile"><div class="stat-tile-num" style="color:var(--successt)">${done}</div><div class="stat-tile-label">Published</div></div>
+      <div class="stat-tile"><div class="stat-tile-num" style="color:var(--dangert)">${overdue}</div><div class="stat-tile-label">Overdue</div></div>
+      <div class="stat-tile"><div class="stat-tile-num" style="color:var(--warnt)">${urgent}</div><div class="stat-tile-label">Due soon</div></div>
+    </div>
+    <div class="bar-card">${'<div class="bar-card-title">Workload by team member</div>'+bars(byEditor,'#0F2645')}</div>
+    <div class="bar-card">${'<div class="bar-card-title">Tasks by client</div>'+bars(byClient,'#185FA5')}</div>
+    <div class="bar-card">${'<div class="bar-card-title">Content types</div>'+bars(byType,'#5B21B6')}</div>
+    <div class="bar-card">
+      <div class="bar-card-title">Deadline health</div>
+      <div class="bar-row"><div class="bar-lbl" style="color:var(--successt)">On track</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(ontrack/total*100)}%;background:#059669"></div></div><div class="bar-num">${ontrack}</div></div>
+      <div class="bar-row"><div class="bar-lbl" style="color:var(--warnt)">Due soon</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(urgent/total*100)}%;background:#D97706"></div></div><div class="bar-num">${urgent}</div></div>
+      <div class="bar-row"><div class="bar-lbl" style="color:var(--dangert)">Overdue</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(overdue/total*100)}%;background:#DC2626"></div></div><div class="bar-num">${overdue}</div></div>
+    </div>`;
+}
+
+function switchTab(tab,btn){
+  activeTab=tab;
+  document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('view-board').style.display=tab==='board'?'block':'none';
+  document.getElementById('view-dashboard').style.display=tab==='dashboard'?'block':'none';
+  render();
+}
+
+function showModal(html){document.getElementById('modal-zone').innerHTML=html}
+function closeModal(){document.getElementById('modal-zone').innerHTML=''}
+
+function openAdd(stage){
+  const today=new Date().toISOString().slice(0,10);
+  showModal(`<div class="sheet-bg" onclick="if(event.target===this)closeModal()">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">New content task</div>
+      <div><label class="field-label">Client name</label><input class="ios-input" id="a-client" placeholder="e.g. Zara Boutique"></div>
+      <div><label class="field-label">Content title</label><input class="ios-input" id="a-title" placeholder="e.g. Summer reel – new arrivals"></div>
+      <div><label class="field-label">Content type</label><select class="ios-select" id="a-type">${TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div>
+      <div><label class="field-label">Assign to</label><select class="ios-select" id="a-assign">${TEAM.map(t=>`<option>${t}</option>`).join('')}</select></div>
+      <div><label class="field-label">Start stage</label><select class="ios-select" id="a-stage">${STAGES.map(s=>`<option value="${s.id}"${s.id===stage?' selected':''}>${s.id}. ${s.name}</option>`).join('')}</select></div>
+      <div><label class="field-label">Due date</label><input class="ios-input" id="a-due" type="date" value="${today}"></div>
+      <div><label class="field-label">Brief notes</label><textarea class="ios-textarea" id="a-notes" placeholder="Key details, references, links…"></textarea></div>
+      <button class="ios-primary-btn" onclick="submitAdd()">Add to pipeline</button>
+      <button class="ios-ghost-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>`);
+}
+
+async function submitAdd(){
+  const client=document.getElementById('a-client').value.trim();
+  const title=document.getElementById('a-title').value.trim();
+  if(!client||!title){alert('Enter client name and content title');return}
+  const note=document.getElementById('a-notes').value.trim();
+  tasks.push({id:uid(),client,title,type:document.getElementById('a-type').value,assigned:document.getElementById('a-assign').value,due:document.getElementById('a-due').value,stage:parseInt(document.getElementById('a-stage').value),notes:note?[{t:note,ts:ts()}]:[],revisions:0});
+  closeModal();
+  await saveToStorage();
+  render();
+}
+
+function openDetail(id){
+  const t=tasks.find(x=>x.id===id);
+  if(!t)return;
+  const s=STAGES.find(x=>x.id===t.stage);
+  const status=dueStatus(t.due);
+  const notesHtml=t.notes.length?t.notes.map(n=>`<div class="note-bubble"><div class="note-bubble-time">${n.ts}</div><div class="note-bubble-text">${n.t}</div></div>`).join(''):`<div style="font-size:13px;color:var(--text3);text-align:center;padding:8px 0">No notes yet</div>`;
+  showModal(`<div class="sheet-bg" onclick="if(event.target===this)closeModal()">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div style="text-align:center;margin-bottom:2px">
+        <div style="font-size:18px;font-weight:700;color:var(--text);line-height:1.3">${t.title}</div>
+        <div style="font-size:13px;color:var(--infot);font-weight:600;margin-top:4px">${t.client}</div>
+      </div>
+      <div class="detail-row-pair">
+        <div class="detail-field"><div class="detail-key">Type</div><div class="detail-val">${t.type}</div></div>
+        <div class="detail-field"><div class="detail-key">Assigned</div><div class="detail-val">${t.assigned}</div></div>
+        <div class="detail-field"><div class="detail-key">Due</div><div class="detail-val" style="${status==='overdue'?'color:var(--dangert)':status==='urgent'?'color:var(--warnt)':''}">${t.due?dueLabel(t.due,status):'—'}</div></div>
+        <div class="detail-field"><div class="detail-key">Revisions</div><div class="detail-val">${t.revisions} / 2</div></div>
+      </div>
+      <div><label class="field-label">Move to stage</label>
+        <select class="ios-select" onchange="moveStage('${t.id}',this.value)">${STAGES.map(s=>`<option value="${s.id}"${s.id===t.stage?' selected':''}>${s.id}. ${s.name}</option>`).join('')}</select>
+      </div>
+      <div>
+        <div class="field-label" style="margin-bottom:8px">Notes</div>
+        <div class="notes-list">${notesHtml}</div>
+      </div>
+      <div><label class="field-label">Add note</label>
+        <textarea class="ios-textarea" id="d-note" placeholder="Client feedback, revision instructions…"></textarea>
+        <button class="ios-primary-btn" style="margin-top:8px" onclick="addNote('${t.id}')">Save note</button>
+      </div>
+      ${t.revisions<2?`<button class="ios-ghost-btn" onclick="addRevision('${t.id}')"><i class="ti ti-refresh" aria-hidden="true"></i> Mark revision (+1)</button>`:`<div style="text-align:center;font-size:13px;color:var(--dangert);font-weight:600;padding:4px 0">Max 2 revisions reached</div>`}
+      <button class="ios-danger-btn" onclick="deleteTask('${t.id}')"><i class="ti ti-trash" aria-hidden="true"></i> Delete task</button>
+      <button class="ios-ghost-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>`);
+}
+
+async function moveStage(id,v){
+  const t=tasks.find(x=>x.id===id);
+  if(t){t.stage=parseInt(v);await saveToStorage();render()}
+}
+
+async function addNote(id){
+  const v=document.getElementById('d-note').value.trim();
+  if(!v)return;
+  const t=tasks.find(x=>x.id===id);
+  if(t){t.notes.push({t:v,ts:ts()});await saveToStorage();openDetail(id);render()}
+}
+
+async function addRevision(id){
+  const t=tasks.find(x=>x.id===id);
+  if(t&&t.revisions<2){t.revisions++;await saveToStorage();openDetail(id);render()}
+}
+
+async function deleteTask(id){
+  if(!confirm('Delete this task?'))return;
+  tasks=tasks.filter(x=>x.id!==id);
+  closeModal();
+  await saveToStorage();
+  render();
+}
+
+loadFromStorage();
+syncInterval=setInterval(loadFromStorage,30000);
+</script>

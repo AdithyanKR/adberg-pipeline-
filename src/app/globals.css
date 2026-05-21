@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #0F2645;
+  --navy-light: #1A3A60;
+  --blue-brand: #185FA5;
+  --blue-accent: #378ADD;
+  
+  --ios-bg: #FFFFFF;
+  --ios-bg-secondary: #F2F2F7;
+  --ios-bg-tertiary: #E5E5EA;
+  
+  --ios-text: #000000;
+  --ios-text-secondary: #3A3A3C;
+  --ios-text-tertiary: #8E8E93;
+  
+  --ios-border: #E5E5EA;
+  --ios-border-secondary: #D1D1D6;
+  
+  --ios-success: #E8F5E9;
+  --ios-success-text: #2E7D32;
+  
+  --ios-warning: #FFF3E0;
+  --ios-warning-text: #E65100;
+  
+  --ios-danger: #FFEBEE;
+  --ios-danger-text: #C62828;
+  
+  --ios-info: #E3F2FD;
+  --ios-info-text: #1565C0;
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-light: var(--navy-light);
+  --color-blue-brand: var(--blue-brand);
+  --color-blue-accent: var(--blue-accent);
+  --color-ios-bg: var(--ios-bg);
+  --color-ios-bg-secondary: var(--ios-bg-secondary);
+  --color-ios-bg-tertiary: var(--ios-bg-tertiary);
+  --color-ios-text: var(--ios-text);
+  --color-ios-text-secondary: var(--ios-text-secondary);
+  --color-ios-text-tertiary: var(--ios-text-tertiary);
+  --color-ios-border: var(--ios-border);
+  --color-ios-border-secondary: var(--ios-border-secondary);
+  --color-ios-success: var(--ios-success);
+  --color-ios-success-text: var(--ios-success-text);
+  --color-ios-warning: var(--ios-warning);
+  --color-ios-warning-text: var(--ios-warning-text);
+  --color-ios-danger: var(--ios-danger);
+  --color-ios-danger-text: var(--ios-danger-text);
+  --color-ios-info: var(--ios-info);
+  --color-ios-info-text: var(--ios-info-text);
+}
+
+body {
+  background: var(--ios-bg-secondary);
+  color: var(--ios-text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom scrollbar hiding helper */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
