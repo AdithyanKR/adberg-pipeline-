@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { prisma, isDbConnected } from "./db";
+import { Prisma } from "@prisma/client";
 
 export interface NoteData {
   id?: string;
@@ -186,31 +187,29 @@ function writeLocalData(data: TaskData[]) {
 export async function getTasks(): Promise<{ tasks: TaskData[]; dbConnected: boolean }> {
   if (isDbConnected && prisma) {
     try {
-      const dbTasks = await prisma.task.findMany({
-        include: { notes: { orderBy: { createdAt: "asc" } } },
-        orderBy: { createdAt: "desc" },
+      const dbTasks = await prisma.tasks.findMany({
+        orderBy: { created_at: "desc" },
       });
       
-      const mappedTasks: TaskData[] = dbTasks.map(t => ({
-        id: t.id,
-        client: t.client,
-        title: t.title,
-        type: t.type,
-        assigned: t.assigned,
-        due: t.due ? t.due.toISOString().slice(0, 10) : null,
-        stage: t.stage,
-        revisions: t.revisions,
-        notes: t.notes.map(n => ({
-          id: n.id,
-          t: n.content,
-          ts: n.createdAt.toLocaleString("en-GB", {
-            day: "2-digit",
-            month: "short",
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        })),
-      }));
+      const mappedTasks: TaskData[] = dbTasks.map(t => {
+        const rawNotes = t.notes as any;
+        let notesArr: NoteData[] = [];
+        if (Array.isArray(rawNotes)) {
+          notesArr = rawNotes;
+        }
+
+        return {
+          id: t.id,
+          client: t.client || "",
+          title: t.title || "",
+          type: t.type || "",
+          assigned: t.assigned || "",
+          due: t.due || null,
+          stage: t.stage || 1,
+          revisions: t.revisions || 0,
+          notes: notesArr,
+        };
+      });
       
       return { tasks: mappedTasks, dbConnected: true };
     } catch (error) {
@@ -223,47 +222,34 @@ export async function getTasks(): Promise<{ tasks: TaskData[]; dbConnected: bool
 export async function createTask(task: Omit<TaskData, "id" | "revisions" | "notes"> & { note?: string }): Promise<{ task: TaskData; dbConnected: boolean }> {
   const newId = uid();
   const timestamp = ts();
-  
+  const newNoteArr = task.note ? [{ t: task.note, ts: timestamp }] : [];
+
   if (isDbConnected && prisma) {
     try {
-      const created = await prisma.task.create({
+      const created = await prisma.tasks.create({
         data: {
           id: newId,
           client: task.client,
           title: task.title,
           type: task.type,
           assigned: task.assigned,
-          due: task.due ? new Date(task.due) : null,
+          due: task.due,
           stage: task.stage,
           revisions: 0,
-          notes: task.note ? {
-            create: {
-              content: task.note,
-            }
-          } : undefined,
+          notes: newNoteArr as any,
         },
-        include: { notes: true },
       });
       
       const mapped: TaskData = {
         id: created.id,
-        client: created.client,
-        title: created.title,
-        type: created.type,
-        assigned: created.assigned,
-        due: created.due ? created.due.toISOString().slice(0, 10) : null,
-        stage: created.stage,
-        revisions: created.revisions,
-        notes: created.notes.map(n => ({
-          id: n.id,
-          t: n.content,
-          ts: n.createdAt.toLocaleString("en-GB", {
-            day: "2-digit",
-            month: "short",
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        })),
+        client: created.client || "",
+        title: created.title || "",
+        type: created.type || "",
+        assigned: created.assigned || "",
+        due: created.due || null,
+        stage: created.stage || 1,
+        revisions: created.revisions || 0,
+        notes: (created.notes as any) || [],
       };
       
       return { task: mapped, dbConnected: true };
@@ -283,7 +269,7 @@ export async function createTask(task: Omit<TaskData, "id" | "revisions" | "note
     due: task.due,
     stage: task.stage,
     revisions: 0,
-    notes: task.note ? [{ t: task.note, ts: timestamp }] : [],
+    notes: newNoteArr,
   };
   localTasks.push(fallbackTask);
   writeLocalData(localTasks);
@@ -294,35 +280,22 @@ export async function updateTask(id: string, updates: Partial<Omit<TaskData, "id
   if (isDbConnected && prisma) {
     try {
       const dataToUpdate: any = { ...updates };
-      if (updates.due !== undefined) {
-        dataToUpdate.due = updates.due ? new Date(updates.due) : null;
-      }
       
-      const updated = await prisma.task.update({
+      const updated = await prisma.tasks.update({
         where: { id },
         data: dataToUpdate,
-        include: { notes: { orderBy: { createdAt: "asc" } } },
       });
       
       const mapped: TaskData = {
         id: updated.id,
-        client: updated.client,
-        title: updated.title,
-        type: updated.type,
-        assigned: updated.assigned,
-        due: updated.due ? updated.due.toISOString().slice(0, 10) : null,
-        stage: updated.stage,
-        revisions: updated.revisions,
-        notes: updated.notes.map(n => ({
-          id: n.id,
-          t: n.content,
-          ts: n.createdAt.toLocaleString("en-GB", {
-            day: "2-digit",
-            month: "short",
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        })),
+        client: updated.client || "",
+        title: updated.title || "",
+        type: updated.type || "",
+        assigned: updated.assigned || "",
+        due: updated.due || null,
+        stage: updated.stage || 1,
+        revisions: updated.revisions || 0,
+        notes: (updated.notes as any) || [],
       };
       
       return { task: mapped, dbConnected: true };
@@ -346,27 +319,27 @@ export async function updateTask(id: string, updates: Partial<Omit<TaskData, "id
 
 export async function addNote(taskId: string, content: string): Promise<{ note: NoteData | null; dbConnected: boolean }> {
   const timestamp = ts();
+  const newNote: NoteData = { t: content, ts: timestamp };
+
   if (isDbConnected && prisma) {
     try {
-      const createdNote = await prisma.note.create({
-        data: {
-          taskId,
-          content,
-        },
-      });
-      return {
-        note: {
-          id: createdNote.id,
-          t: createdNote.content,
-          ts: createdNote.createdAt.toLocaleString("en-GB", {
-            day: "2-digit",
-            month: "short",
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-        dbConnected: true,
-      };
+      const task = await prisma.tasks.findUnique({ where: { id: taskId } });
+      if (task) {
+        let currentNotes = (task.notes as any) || [];
+        if (!Array.isArray(currentNotes)) currentNotes = [];
+        
+        await prisma.tasks.update({
+          where: { id: taskId },
+          data: {
+            notes: [...currentNotes, newNote] as any,
+          }
+        });
+        
+        return {
+          note: newNote,
+          dbConnected: true,
+        };
+      }
     } catch (error) {
       console.error("Database note error, falling back to local file storage:", error);
     }
@@ -377,7 +350,6 @@ export async function addNote(taskId: string, content: string): Promise<{ note: 
   const task = localTasks.find(t => t.id === taskId);
   if (!task) return { note: null, dbConnected: false };
   
-  const newNote = { t: content, ts: timestamp };
   task.notes.push(newNote);
   writeLocalData(localTasks);
   return { note: newNote, dbConnected: false };
@@ -386,7 +358,7 @@ export async function addNote(taskId: string, content: string): Promise<{ note: 
 export async function deleteTask(id: string): Promise<{ success: boolean; dbConnected: boolean }> {
   if (isDbConnected && prisma) {
     try {
-      await prisma.task.delete({
+      await prisma.tasks.delete({
         where: { id },
       });
       return { success: true, dbConnected: true };

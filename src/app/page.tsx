@@ -206,7 +206,7 @@ export default function PipelinePage() {
         </div>
 
         {/* Dynamic Metric Badges */}
-        <div className="grid grid-cols-4 gap-1.5 mt-1.5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
           <div className="bg-white/10 rounded-xl p-2 text-center">
             <div className="text-[18px] md:text-[20px] font-extrabold leading-none">
               {totalCount}
